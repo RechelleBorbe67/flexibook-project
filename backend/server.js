@@ -51,6 +51,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/users', require('./routes/users'));
 
 // Basic route
 app.get('/', (req, res) => {
