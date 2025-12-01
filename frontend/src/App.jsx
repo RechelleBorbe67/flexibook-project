@@ -5,6 +5,7 @@ import BookingForm from './components/BookingForm';
 import CalendarView from './components/CalendarView';
 import Login from './components/Login';
 import Register from './components/Register';
+import MyBookings from './components/MyBookings';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -162,17 +163,11 @@ function App() {
           </div>
         )}
 
-        {/* My Bookings View (placeholder) */}
+        {/* My Bookings View */}
         {currentView === 'bookings' && (
           <div className="bookings-view">
             {user ? (
-              <div className="bookings-content">
-                <h2>My Bookings</h2>
-                <p>Your booking history will appear here.</p>
-                <div className="coming-soon">
-                  <p>📋 Booking management coming soon!</p>
-                </div>
-              </div>
+              <MyBookings />
             ) : (
               <div className="login-prompt">
                 <h2>Please Login</h2>
