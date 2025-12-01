@@ -6,6 +6,7 @@ import CalendarView from './components/CalendarView';
 import Login from './components/Login';
 import Register from './components/Register';
 import MyBookings from './components/MyBookings';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -59,6 +60,9 @@ function App() {
             {user ? (
               <div className="user-menu">
                 <span className="welcome">Welcome, {user.name}</span>
+                {user.role === 'admin' && (
+                  <button onClick={() => setCurrentView('admin')}>Admin</button>
+                )}
                 <button onClick={handleLogout}>Logout</button>
               </div>
             ) : (
@@ -177,6 +181,26 @@ function App() {
                   className="cta-button"
                 >
                   Login Now
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Admin View - ADD THIS SECTION HERE (at the same level as other views) */}
+        {currentView === 'admin' && (
+          <div className="admin-view">
+            {user?.role === 'admin' ? (
+              <AdminDashboard />
+            ) : (
+              <div className="access-denied">
+                <h2>Access Denied</h2>
+                <p>You must be an administrator to access this page.</p>
+                <button 
+                  onClick={() => setCurrentView('home')}
+                  className="cta-button"
+                >
+                  Go Home
                 </button>
               </div>
             )}
