@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminDashboard.css';
+import { adminAPI, serviceAPI, bookingAPI } from '../services/api';
+
 
 function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -23,73 +25,62 @@ function AdminDashboard() {
     }
   }, [activeTab]);
 
-  const fetchDashboardData = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/admin/stats', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setStats(response.data.data);
-      setLoading(false);
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to load dashboard data' });
-      setLoading(false);
-    }
-  };
+// Replace all fetch functions:
+const fetchDashboardData = async () => {
+  try {
+    const response = await adminAPI.getStats();
+    setStats(response.data.data);
+    setLoading(false);
+  } catch (error) {
+    setMessage({ type: 'error', text: 'Failed to load dashboard data' });
+    setLoading(false);
+  }
+};
 
-  const fetchUsers = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/admin/users', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUsers(response.data.data.users);
-      setLoading(false);
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to load users' });
-      setLoading(false);
-    }
-  };
+const fetchUsers = async () => {
+  try {
+    const response = await adminAPI.getUsers();
+    setUsers(response.data.data.users);
+    setLoading(false);
+  } catch (error) {
+    setMessage({ type: 'error', text: 'Failed to load users' });
+    setLoading(false);
+  }
+};
 
-  const fetchServices = async () => {
-    try {
-      const response = await axios.get('/api/services');
-      setServices(response.data.data);
-      setLoading(false);
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to load services' });
-      setLoading(false);
-    }
-  };
+const fetchServices = async () => {
+  try {
+    const response = await serviceAPI.getAll();
+    setServices(response.data.data);
+    setLoading(false);
+  } catch (error) {
+    setMessage({ type: 'error', text: 'Failed to load services' });
+    setLoading(false);
+  }
+};
 
-  const fetchRecentBookings = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/bookings', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setRecentBookings(response.data.data.slice(0, 10));
-      setLoading(false);
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to load bookings' });
-      setLoading(false);
-    }
-  };
+const fetchRecentBookings = async () => {
+  try {
+    const response = await bookingAPI.getAll();
+    setRecentBookings(response.data.data.slice(0, 10));
+    setLoading(false);
+  } catch (error) {
+    setMessage({ type: 'error', text: 'Failed to load bookings' });
+    setLoading(false);
+  }
+};
 
-  const handleDeleteService = async (serviceId) => {
-    if (!window.confirm('Are you sure you want to delete this service?')) return;
+const handleDeleteService = async (serviceId) => {
+  if (!window.confirm('Are you sure you want to delete this service?')) return;
 
-    try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`/api/services/${serviceId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setMessage({ type: 'success', text: 'Service deleted successfully' });
-      fetchServices();
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to delete service' });
-    }
-  };
+  try {
+    await serviceAPI.delete(serviceId);
+    setMessage({ type: 'success', text: 'Service deleted successfully' });
+    fetchServices();
+  } catch (error) {
+    setMessage({ type: 'error', text: 'Failed to delete service' });
+  }
+};
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Auth.css';
+import { authAPI } from '../services/api';
+
 
 function Register({ onLogin, switchToLogin }) {
   const [formData, setFormData] = useState({
@@ -27,7 +29,7 @@ function Register({ onLogin, switchToLogin }) {
     setMessage({ type: '', text: '' });
 
     try {
-      const response = await axios.post('/api/auth/register', formData);
+     const response = await authAPI.register(formData);
       
       // Save token to localStorage
       localStorage.setItem('token', response.data.token);

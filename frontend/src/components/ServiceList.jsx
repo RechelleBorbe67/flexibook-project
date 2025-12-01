@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { serviceAPI } from '../services/api';
 import './ServiceList.css';
 
 function ServiceList() {
@@ -13,11 +13,14 @@ function ServiceList() {
 
   const fetchServices = async () => {
     try {
-      const response = await axios.get('/api/services');
+      setLoading(true);
+      const response = await serviceAPI.getAll();
       setServices(response.data.data);
-      setLoading(false);
+      setError('');
     } catch (err) {
-      setError('Failed to load services');
+      setError('Failed to load services. Please try again later.');
+      console.error('Error fetching services:', err);
+    } finally {
       setLoading(false);
     }
   };

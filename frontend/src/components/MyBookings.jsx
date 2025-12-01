@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './MyBookings.css';
+import { bookingAPI } from '../services/api';
 
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
@@ -13,52 +14,30 @@ function MyBookings() {
   }, [filter]);
 
   const fetchBookings = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setMessage({ type: 'error', text: 'Please login to view your bookings' });
-        setLoading(false);
-        return;
-      }
-
-      let url = '/api/users/bookings';
-      if (filter !== 'all') {
-        url += `?status=${filter}`;
-      }
-
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      setBookings(response.data.data.bookings);
-      setLoading(false);
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to load bookings' });
-      setLoading(false);
-    }
-  };
-
+  try {
+    setLoading(true);
+    const params = filter !== 'all' ? { status: filter } : {};
+    const response = await bookingAPI.getMyBookings(params);
+    setBookings(response.data.data.bookings);
+    setLoading(false);
+  } catch (error) {
+    setMessage({ type: 'error', text: 'Failed to load bookings' });
+    setLoading(false);
+  }
+};
   const handleCancelBooking = async (bookingId) => {
-    if (!window.confirm('Are you sure you want to cancel this booking?')) {
-      return;
-    }
+  if (!window.confirm('Are you sure you want to cancel this booking?')) {
+    return;
+  }
 
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put(`/api/bookings/${bookingId}/cancel`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      setMessage({ type: 'success', text: 'Booking cancelled successfully' });
-      fetchBookings(); // Refresh the list
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to cancel booking' });
-    }
-  };
+  try {
+    await bookingAPI.cancel(bookingId);
+    setMessage({ type: 'success', text: 'Booking cancelled successfully' });
+    fetchBookings(); // Refresh the list
+  } catch (error) {
+    setMessage({ type: 'error', text: 'Failed to cancel booking' });
+  }
+};
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
