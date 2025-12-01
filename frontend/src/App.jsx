@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import ServiceList from './components/ServiceList';
 import BookingForm from './components/BookingForm';
+import CalendarView from './components/CalendarView';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -15,6 +16,8 @@ function App() {
           <nav>
             <button onClick={() => setCurrentView('home')}>Home</button>
             <button onClick={() => setCurrentView('services')}>Services</button>
+            <button onClick={() => setCurrentView('booking')}>Book Now</button>
+            <button onClick={() => setCurrentView('calendar')}>Calendar</button>
             <button onClick={() => setCurrentView('bookings')}>My Bookings</button>
             {user ? (
               <button onClick={() => setUser(null)}>Logout</button>
@@ -61,6 +64,13 @@ function App() {
         {currentView === 'booking' && (
           <div className="booking-view">
             <BookingForm />
+          </div>
+        )}
+
+        {/* Calendar View */}
+        {currentView === 'calendar' && (
+          <div className="calendar-view-page">
+            <CalendarView />
           </div>
         )}
 
@@ -129,32 +139,7 @@ function App() {
         {/* Services View */}
         {currentView === 'services' && (
           <div className="services-view">
-            <h2>Our Services</h2>
-            <div className="services-grid">
-              <div className="service-card">
-                <h3>💇‍♀️ Haircut</h3>
-                <p>$25 • 45 minutes</p>
-                <p>Professional haircut and styling</p>
-              </div>
-              
-              <div className="service-card">
-                <h3>🎨 Hair Coloring</h3>
-                <p>$60 • 2 hours</p>
-                <p>Full hair coloring service</p>
-              </div>
-              
-              <div className="service-card">
-                <h3>💅 Manicure</h3>
-                <p>$20 • 30 minutes</p>
-                <p>Basic manicure with polish</p>
-              </div>
-              
-              <div className="service-card">
-                <h3>👣 Pedicure</h3>
-                <p>$25 • 45 minutes</p>
-                <p>Relaxing pedicure treatment</p>
-              </div>
-            </div>
+            <ServiceList />
           </div>
         )}
       </main>
