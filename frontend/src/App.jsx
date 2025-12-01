@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import ServiceList from './components/ServiceList';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
