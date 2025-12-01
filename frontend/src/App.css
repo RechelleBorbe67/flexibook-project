@@ -1,3 +1,55 @@
+/* User Menu Styles */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.welcome {
+  color: white;
+  font-weight: 500;
+}
+
+/* Login Prompt Styles */
+.login-prompt {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.login-prompt h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.login-prompt p {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Bookings View */
+.bookings-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.coming-soon {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+.coming-soon p {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Header */
 .app-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
