@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import ServiceList from './components/ServiceList';
+import BookingForm from './components/BookingForm';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -56,46 +57,10 @@ function App() {
           </div>
         )}
 
-        {/* Booking View */}
+        {/* Booking View (replaced with BookingForm component) */}
         {currentView === 'booking' && (
           <div className="booking-view">
-            <h2>Make a Reservation</h2>
-            <form className="booking-form">
-              <div className="form-group">
-                <label>Service:</label>
-                <select>
-                  <option>Haircut - $25</option>
-                  <option>Hair Coloring - $60</option>
-                  <option>Manicure - $20</option>
-                  <option>Pedicure - $25</option>
-                  <option>Facial - $45</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label>Date:</label>
-                <input type="date" />
-              </div>
-              
-              <div className="form-group">
-                <label>Time:</label>
-                <input type="time" />
-              </div>
-              
-              <div className="form-group">
-                <label>Your Name:</label>
-                <input type="text" placeholder="Enter your name" />
-              </div>
-              
-              <div className="form-group">
-                <label>Phone Number:</label>
-                <input type="tel" placeholder="Enter your phone number" />
-              </div>
-              
-              <button type="submit" className="submit-button">
-                Book Appointment
-              </button>
-            </form>
+            <BookingForm />
           </div>
         )}
 
