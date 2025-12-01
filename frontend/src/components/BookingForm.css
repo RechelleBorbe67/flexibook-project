@@ -193,3 +193,129 @@
   border: 2px solid rgba(102, 126, 234, 0.3);
   border-top-color: #667eea;
 }
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Small screens (up to 480px) */
+@media (max-width: 480px) {
+  .booking-form-container {
+    padding: 0.75rem;
+    margin: 0.25rem;
+  }
+
+  .booking-form-container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.6rem;
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+
+  .submit-btn {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .form-summary {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .form-note {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Medium screens (481px to 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+  .booking-form-container {
+    padding: 1rem;
+  }
+
+  .booking-form-container h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Tablet landscape (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .booking-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .form-group:last-child {
+    grid-column: span 2;
+  }
+
+  .submit-btn {
+    grid-column: span 2;
+  }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .booking-form-container {
+    border-width: 0.5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    border-width: 0.5px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .booking-form-container {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: #2d2d2d;
+    color: #ffffff;
+    border-color: #444;
+  }
+
+  .form-summary {
+    background: #2d2d2d;
+    color: #ffffff;
+  }
+
+  .form-note {
+    background: #1e3a5f;
+    color: #e3f2fd;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .booking-form-container,
+  .form-group input:focus,
+  .form-group select:focus,
+  .submit-btn {
+    transition: none;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    transform: none;
+  }
+}
