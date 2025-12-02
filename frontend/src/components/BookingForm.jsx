@@ -302,7 +302,7 @@ function BookingForm() {
             <option value="">Choose a service...</option>
             {services.map(service => (
               <option key={service._id} value={service._id}>
-                {service.name} - ${service.price} ({service.duration} min)
+                {service.name} - ₱{service.price} ({service.duration} min)
               </option>
             ))}
           </select>

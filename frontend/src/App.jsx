@@ -97,9 +97,14 @@ function App() {
       )}
 
       <header className="app-header">
-        <div className="container">
-          <h1>💇‍♀️ FlexiBook Salon</h1>
-          <nav>
+  <div className="container">
+    <div className="logo-container">
+      <div className="logo-box">
+        <span className="logo-text">FS</span>
+      </div>
+      <span className="logo-name">FlexiBook Salon</span>
+    </div>
+    <nav>
             <button onClick={() => setCurrentView('home')}>Home</button>
             
             {/* Show Services button only for non-admin users */}

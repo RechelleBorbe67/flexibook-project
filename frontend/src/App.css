@@ -661,3 +661,51 @@
   background: #f9fafb;
   border-color: #9ca3af;
 }
+
+/* Logo Styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-box {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #007bff, #6610f2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo-text {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.logo-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* If you want the logo to be clickable to go home */
+.logo-container {
+  cursor: pointer;
+}
+
+.logo-container:hover .logo-box {
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+
+/* Make the whole logo clickable to go home */
+.logo-container {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}

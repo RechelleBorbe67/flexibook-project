@@ -263,13 +263,13 @@ function AdminDashboard() {
     
     if (activeReport === 'booking' && bookingReportData) {
       dataToExport = bookingReportData;
-      filename = `booking-report-${reportStartDate}-to-${reportEndDate}.json`;
+      filename = `booking-report-₱{reportStartDate}-to-₱{reportEndDate}.json`;
     } else if (activeReport === 'revenue' && revenueReportData) {
       dataToExport = revenueReportData;
-      filename = `revenue-report-${reportStartDate}-to-${reportEndDate}.json`;
+      filename = `revenue-report-₱{reportStartDate}-to-₱{reportEndDate}.json`;
     } else if (activeReport === 'customer' && customerReportData) {
       dataToExport = customerReportData;
-      filename = `customer-insights-${reportStartDate}-to-${reportEndDate}.json`;
+      filename = `customer-insights-₱{reportStartDate}-to-₱{reportEndDate}.json`;
     }
     
     if (dataToExport) {
@@ -384,7 +384,7 @@ function AdminDashboard() {
             </div>
             <div className="stat-card revenue">
               <h3>Revenue (7 days)</h3>
-              <div className="stat-value">${stats.overview.revenue}</div>
+              <div className="stat-value">₱{stats.overview.revenue}</div>
             </div>
 
             {/* Add Charts Section HERE - after your existing stat cards */}
@@ -417,7 +417,7 @@ function AdminDashboard() {
                   data={{
                     labels: stats.popularServices.map(s => s.serviceName),
                     datasets: [{
-                      label: 'Revenue ($)',
+                      label: 'Revenue (₱)',
                       data: stats.popularServices.map(s => s.bookingCount * (s.price || 0)),
                       backgroundColor: [
                         '#667eea', '#764ba2', '#28a745', '#ffc107', '#dc3545'
@@ -432,7 +432,7 @@ function AdminDashboard() {
                         beginAtZero: true,
                         ticks: {
                           callback: function(value) {
-                            return '$' + value;
+                            return '₱' + value;
                           }
                         }
                       }
@@ -483,7 +483,7 @@ function AdminDashboard() {
                             const value = context.raw || 0;
                             const total = context.dataset.data.reduce((a, b) => a + b, 0);
                             const percentage = Math.round((value / total) * 100);
-                            return `${label}: ${value} (${percentage}%)`;
+                            return `₱{label}: ₱{value} (₱{percentage}%)`;
                           }
                         }
                       }
@@ -588,7 +588,7 @@ function AdminDashboard() {
                           <div 
                             className="progress-fill" 
                             style={{ 
-                              width: `${percentage}%`,
+                              width: `₱{percentage}%`,
                               backgroundColor: config.color
                             }}
                           />
@@ -690,13 +690,13 @@ function AdminDashboard() {
                         <tr key={service._id}>
                           <td>{service.name}</td>
                           <td className="description-cell">{service.description}</td>
-                          <td>${service.price}</td>
+                          <td>₱{service.price}</td>
                           <td>{service.duration} min</td>
                           <td>
                             <span className="category-badge">{service.category}</span>
                           </td>
                           <td>
-                            <span className={`status-badge ${service.available ? 'available' : 'unavailable'}`}>
+                            <span className={`status-badge ₱{service.available ? 'available' : 'unavailable'}`}>
                               {service.available ? 'Available' : 'Unavailable'}
                             </span>
                           </td>
@@ -766,7 +766,7 @@ function AdminDashboard() {
                           {booking.status}
                         </span>
                       </td>
-                      <td>${booking.service?.price || 'N/A'}</td>
+                      <td>₱{booking.service?.price || 'N/A'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -832,7 +832,7 @@ function AdminDashboard() {
               <div className="report-card">
                 <div className="report-card-header">
                   <h4>Revenue Analysis</h4>
-                  <span className="report-amount">${revenueReportData?.totalRevenue || 0}</span>
+                  <span className="report-amount">₱{revenueReportData?.totalRevenue || 0}</span>
                 </div>
                 <p>Analyze revenue trends and patterns</p>
                 <div className="report-stats">
@@ -840,7 +840,7 @@ function AdminDashboard() {
                     <>
                       <div className="stat-item">
                         <span className="stat-label">Avg. Booking:</span>
-                        <span className="stat-value">${revenueReportData.averageBookingValue?.toFixed(2) || 0}</span>
+                        <span className="stat-value">₱{revenueReportData.averageBookingValue?.toFixed(2) || 0}</span>
                       </div>
                       <div className="stat-item">
                         <span className="stat-label">Bookings:</span>
@@ -848,7 +848,7 @@ function AdminDashboard() {
                       </div>
                       <div className="stat-item">
                         <span className="stat-label">Daily Avg:</span>
-                        <span className="stat-value">${revenueReportData.dailyAverage?.toFixed(2) || 0}</span>
+                        <span className="stat-value">₱{revenueReportData.dailyAverage?.toFixed(2) || 0}</span>
                       </div>
                     </>
                   )}
@@ -951,7 +951,7 @@ function AdminDashboard() {
                                     {booking.status}
                                   </span>
                                 </td>
-                                <td>${booking.service?.price || 'N/A'}</td>
+                                <td>₱{booking.service?.price || 'N/A'}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -968,7 +968,7 @@ function AdminDashboard() {
                       <div className="summary-grid">
                         <div className="summary-item">
                           <span>Total Revenue</span>
-                          <strong>${revenueReportData.totalRevenue?.toFixed(2) || 0}</strong>
+                          <strong>₱{revenueReportData.totalRevenue?.toFixed(2) || 0}</strong>
                         </div>
                         <div className="summary-item">
                           <span>Total Bookings</span>
@@ -976,11 +976,11 @@ function AdminDashboard() {
                         </div>
                         <div className="summary-item">
                           <span>Avg. per Booking</span>
-                          <strong>${revenueReportData.averageBookingValue?.toFixed(2) || 0}</strong>
+                          <strong>₱{revenueReportData.averageBookingValue?.toFixed(2) || 0}</strong>
                         </div>
                         <div className="summary-item">
                           <span>Daily Average</span>
-                          <strong>${revenueReportData.dailyAverage?.toFixed(2) || 0}</strong>
+                          <strong>₱{revenueReportData.dailyAverage?.toFixed(2) || 0}</strong>
                         </div>
                       </div>
                     </div>
@@ -1010,7 +1010,7 @@ function AdminDashboard() {
                                   beginAtZero: true,
                                   ticks: {
                                     callback: function(value) {
-                                      return '$' + value;
+                                      return '₱' + value;
                                     }
                                   }
                                 }

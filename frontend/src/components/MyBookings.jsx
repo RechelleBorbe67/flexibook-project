@@ -157,7 +157,7 @@ function MyBookings() {
                   </div>
                   <div className="detail-item">
                     <span className="label">Price:</span>
-                    <span className="value">${booking.service?.price || 'N/A'}</span>
+                    <span className="value">₱{booking.service?.price || 'N/A'}</span>
                   </div>
                   {booking.notes && (
                     <div className="detail-item">

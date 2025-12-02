@@ -196,20 +196,21 @@ function ServiceList({ onNavigate }) {
         </div>
 
         <div className="filter-group">
-          <label>Max Price: ${priceRange[1]}</label>
-          <input
-            type="range"
-            min="0"
-            max={Math.max(...services.map(s => s.price))}
-            value={priceRange[1]}
-            onChange={handlePriceChange}
-            className="price-slider"
-          />
-          <div className="price-range">
-            <span>$0</span>
-            <span>${Math.max(...services.map(s => s.price))}</span>
-          </div>
-        </div>
+  <label>Max Price: ₱{priceRange[1]}</label>
+  <input
+    type="range"
+    min="0"
+    max="6000"
+    step="100"  // Adds increments of ₱100
+    value={priceRange[1]}
+    onChange={handlePriceChange}
+    className="price-slider"
+  />
+  <div className="price-range">
+    <span>₱0</span>
+    <span>₱6000</span>
+  </div>
+</div>
 
         {searchTerm || categoryFilter !== 'all' || priceRange[1] < Math.max(...services.map(s => s.price)) ? (
           <button 
@@ -238,9 +239,6 @@ function ServiceList({ onNavigate }) {
               <h3>{service.name}</h3>
               <p className="description">{service.description}</p>
               <div className="service-details">
-                <span className="price">${service.price}</span>
-                <span className="duration">{service.duration} min</span>
-                <span className="category">{service.category}</span>
               </div>
               
               {/* Status indicator */}
