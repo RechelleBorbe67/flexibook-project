@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { serviceAPI } from '../services/api';
 import './ServiceList.css';
 
-function ServiceList() {
+function ServiceList({ onNavigate }) {
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,6 +10,7 @@ function ServiceList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [priceRange, setPriceRange] = useState([0, 100]);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     fetchServices();
@@ -73,6 +74,77 @@ function ServiceList() {
     setPriceRange([0, value]);
   };
 
+  const handleBookNow = (serviceId, serviceName) => {
+    // Get user from localStorage
+    const userData = localStorage.getItem('user');
+    let user = null;
+    
+    if (userData) {
+      try {
+        user = JSON.parse(userData);
+      } catch (err) {
+        console.error('Error parsing user data:', err);
+      }
+    }
+    
+    // Check if user is logged in
+    if (!user || !user.token) {
+      setMessage({ 
+        type: 'error', 
+        text: 'Please login to book an appointment.' 
+      });
+      
+      // Store the intended service to book
+      localStorage.setItem('selectedService', serviceId);
+      localStorage.setItem('selectedServiceName', serviceName);
+      
+      // Use the onNavigate prop or window approach
+      if (onNavigate) {
+        onNavigate('login');
+      } else {
+        // If no onNavigate prop, try to trigger navigation
+        window.dispatchEvent(new CustomEvent('navigate', { detail: 'login' }));
+      }
+      return;
+    }
+    
+    // Check if user is admin
+    if (user.role === 'admin') {
+      setMessage({ 
+        type: 'error', 
+        text: 'Administrators cannot book appointments. Please use a customer account.' 
+      });
+      return;
+    }
+    
+    // Store selected service for booking form
+    localStorage.setItem('selectedService', serviceId);
+    localStorage.setItem('selectedServiceName', serviceName);
+    
+    setMessage({ 
+      type: 'success', 
+      text: `Booking ${serviceName}...` 
+    });
+    
+    // Clear message after 2 seconds
+    setTimeout(() => {
+      setMessage({ type: '', text: '' });
+    }, 2000);
+    
+    // Navigate to booking page
+    if (onNavigate) {
+      onNavigate('booking');
+    } else {
+      // If no onNavigate prop, try to trigger navigation
+      window.dispatchEvent(new CustomEvent('navigate', { 
+        detail: { 
+          view: 'booking',
+          serviceId: serviceId 
+        } 
+      }));
+    }
+  };
+
   const categories = ['all', 'hair', 'nails', 'skin', 'massage', 'other'];
 
   if (loading) return <div className="loading">Loading services...</div>;
@@ -84,6 +156,21 @@ function ServiceList() {
         <h2>Our Services</h2>
         <p className="services-count">{filteredServices.length} services available</p>
       </div>
+
+      {/* Message display */}
+      {message.text && (
+        <div className={`service-message ${message.type}`}>
+          {message.text}
+          {message.type === 'error' && (
+            <button 
+              className="dismiss-btn" 
+              onClick={() => setMessage({ type: '', text: '' })}
+            >
+              ×
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Search and Filter Controls */}
       <div className="filter-controls">
@@ -155,7 +242,24 @@ function ServiceList() {
                 <span className="duration">{service.duration} min</span>
                 <span className="category">{service.category}</span>
               </div>
-              <button className="book-btn">Book Now</button>
+              
+              {/* Status indicator */}
+              <div className="service-status">
+                {service.available ? (
+                  <span className="available">✓ Available</span>
+                ) : (
+                  <span className="unavailable">✗ Unavailable</span>
+                )}
+              </div>
+              
+              {/* Book Now Button */}
+              <button 
+                className="book-btn" 
+                onClick={() => handleBookNow(service._id, service.name)}
+                disabled={!service.available}
+              >
+                {service.available ? 'Book Now' : 'Not Available'}
+              </button>
             </div>
           ))
         )}

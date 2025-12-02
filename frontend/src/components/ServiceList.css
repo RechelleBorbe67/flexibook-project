@@ -146,3 +146,456 @@
     text-align: center;
   }
 }
+
+.service-form {
+  background: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.service-form h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.service-form .form-group {
+  margin-bottom: 20px;
+}
+
+.service-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.service-form input[type="text"],
+.service-form input[type="number"],
+.service-form textarea,
+.service-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.service-form input.error,
+.service-form textarea.error,
+.service-form select.error {
+  border-color: #dc3545;
+}
+
+.service-form .error-text {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.service-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.service-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.service-form .checkbox-group {
+  display: flex;
+  align-items: flex-end;
+}
+
+.service-form .checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.service-form .checkbox-group input[type="checkbox"] {
+  width: auto;
+}
+
+.service-form .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.service-form .submit-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  transition: background 0.3s;
+}
+
+.service-form .submit-btn:hover:not(:disabled) {
+  background: #218838;
+}
+
+.service-form .submit-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.service-form .cancel-btn {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.3s;
+}
+
+.service-form .cancel-btn:hover:not(:disabled) {
+  background: #e9ecef;
+}
+
+.service-form .cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.service-form .message {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.service-form .message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.service-form .message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.service-form {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
+
+.service-form h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.service-form .form-group {
+  margin-bottom: 20px;
+}
+
+.service-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.service-form label.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.service-form input[type="text"],
+.service-form input[type="number"],
+.service-form textarea,
+.service-form select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s;
+  background: white;
+}
+
+.service-form input:focus,
+.service-form textarea:focus,
+.service-form select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.service-form input.error,
+.service-form textarea.error,
+.service-form select.error {
+  border-color: #ef4444;
+}
+
+.service-form input:disabled,
+.service-form textarea:disabled,
+.service-form select:disabled {
+  background: #f9fafb;
+  cursor: not-allowed;
+}
+
+.service-form .error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.service-form textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.service-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.service-form .checkbox-group {
+  display: flex;
+  align-items: flex-end;
+}
+
+.service-form .checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.service-form .form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.service-form .submit-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  flex: 1;
+  transition: background 0.3s;
+}
+
+.service-form .submit-btn:hover:not(:disabled) {
+  background: #059669;
+}
+
+.service-form .submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.service-form .cancel-btn {
+  background: white;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.3s;
+}
+
+.service-form .cancel-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.service-form .cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.service-form .message {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.service-form .message.success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.service-form .message.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 768px) {
+  .service-form .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .service-form .form-actions {
+    flex-direction: column;
+  }
+  
+  .service-form {
+    padding: 20px;
+  }
+}
+/* Service List Messages */
+.service-message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.service-message.success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.service-message.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.dismiss-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.dismiss-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Service Card Status */
+.service-status {
+  margin: 10px 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.service-status .available {
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.service-status .unavailable {
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Book Button Improvements */
+.book-btn {
+  width: 100%;
+  padding: 12px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.book-btn:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.book-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.book-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Service Card Hover Effect */
+.service-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}

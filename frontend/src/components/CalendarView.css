@@ -211,3 +211,178 @@
     font-size: 1.2rem;
   }
 }
+
+/* Add to your existing CalendarView.css */
+.selected-date-info {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #dee2e6;
+}
+
+.selected-date-info p {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #495057;
+}
+
+.book-now-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.book-now-btn:hover {
+  background-color: #0056b3;
+}
+
+.date-hint {
+  display: block;
+  margin-top: 5px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Add to your existing CalendarView.css */
+
+/* Legend styles */
+.legend-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.legend-item:hover {
+  background-color: #f8f9fa;
+}
+
+.legend-item.active-filter {
+  background-color: #e7f1ff;
+  font-weight: bold;
+}
+
+.legend-color.all {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #6c757d;
+  background-color: white;
+}
+
+.legend-color.available {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #28a745;
+}
+
+.legend-color.unavailable {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #dc3545;
+}
+
+.legend-color.today {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #007bff;
+}
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.clear-filter-btn {
+  margin-left: auto;
+  padding: 6px 12px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.clear-filter-btn:hover {
+  background-color: #5a6268;
+}
+
+/* Hidden days styling */
+.calendar-day.hidden-day {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.calendar-day.hidden-day:hover {
+  background-color: transparent;
+}
+
+/* Filter info message */
+.filter-info {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #fff3cd;
+  border: 1px solid #ffecb5;
+  border-radius: 4px;
+  color: #856404;
+  text-align: center;
+}
+
+/* Selected date info */
+.selected-date-info {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e7f1ff;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #b3d7ff;
+}
+
+.selected-date-info p {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #004085;
+}
+
+.book-now-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.book-now-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Calendar day hover effects */
+.calendar-day:not(.hidden-day):not(.past):hover {
+  background-color: #f0f8ff;
+  transform: scale(1.05);
+}
+

@@ -110,6 +110,60 @@ router.get('/stats', async (req, res) => {
   }
 });
 
+// @desc    Get detailed booking statistics for charts
+// @route   GET /api/admin/booking-stats
+// @access  Private/Admin
+router.get('/booking-stats', async (req, res) => {
+  try {
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - 7);
+    
+    // Get booking status counts
+    const statusCounts = await Booking.aggregate([
+      {
+        $group: {
+          _id: '$status',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Get daily bookings for last 7 days
+    const dailyBookings = await Booking.aggregate([
+      {
+        $match: {
+          date: { $gte: startOfWeek, $lte: today }
+        }
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        statusCounts,
+        dailyBookings,
+        totalBookings: statusCounts.reduce((sum, item) => sum + item.count, 0)
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching booking stats',
+      error: error.message
+    });
+  }
+});
+
 // @desc    Get all users with pagination
 // @route   GET /api/admin/users
 // @access  Private/Admin

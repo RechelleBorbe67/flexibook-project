@@ -7,6 +7,8 @@ function BookingForm() {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [hasDateFromCalendar, setHasDateFromCalendar] = useState(false);
   
   const [formData, setFormData] = useState({
     service: '',
@@ -15,17 +17,72 @@ function BookingForm() {
     notes: ''
   });
 
+  // Check if user is admin on component mount
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.role === 'admin') {
+      setIsAdmin(true);
+      setMessage({ 
+        type: 'error', 
+        text: 'Administrators cannot book appointments. Please use a customer account.' 
+      });
+    }
+  }, []);
+
+  // Check for selected date from CalendarView - FIXED VERSION
+  useEffect(() => {
+    const selectedDate = localStorage.getItem('selectedBookingDate');
+    console.log('Selected date from localStorage:', selectedDate); // Debug log
+    
+    if (selectedDate && !isAdmin) {
+      // Format the date to YYYY-MM-DD for the input field
+      const formattedDate = formatDateForInput(selectedDate);
+      console.log('Formatted date for input:', formattedDate); // Debug log
+      
+      setFormData(prev => ({
+        ...prev,
+        date: formattedDate
+      }));
+      setHasDateFromCalendar(true);
+      
+      // Clear the stored date
+      localStorage.removeItem('selectedBookingDate');
+    }
+  }, [isAdmin]);
+
+  // Helper function to format date for input field (YYYY-MM-DD)
+  const formatDateForInput = (dateString) => {
+    try {
+      // If it's already in YYYY-MM-DD format, return as-is
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        return dateString;
+      }
+      
+      // Otherwise, parse and format it
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return dateString;
+    }
+  };
+
   // Fetch services on component mount
   useEffect(() => {
-    fetchServices();
-  }, []);
+    if (!isAdmin) {
+      fetchServices();
+    }
+  }, [isAdmin]);
 
   // Fetch available slots when service or date changes
   useEffect(() => {
-    if (formData.service && formData.date) {
+    if (!isAdmin && formData.service && formData.date) {
       fetchAvailableSlots();
     }
-  }, [formData.service, formData.date]);
+  }, [formData.service, formData.date, isAdmin]);
 
   const fetchServices = async () => {
     try {
@@ -39,15 +96,20 @@ function BookingForm() {
   const fetchAvailableSlots = async () => {
     try {
       setLoading(true);
+      console.log('Fetching slots for:', formData.service, formData.date); // Debug log
+      
       const response = await axios.get('/api/bookings/available-slots', {
         params: {
           serviceId: formData.service,
           date: formData.date
         }
       });
+      console.log('Available slots response:', response.data); // Debug log
+      
       setAvailableSlots(response.data.data.availableSlots);
       setMessage({ type: '', text: '' });
     } catch (error) {
+      console.error('Error fetching slots:', error); // Debug log
       setMessage({ type: 'error', text: 'Failed to load available time slots' });
       setAvailableSlots([]);
     } finally {
@@ -56,6 +118,8 @@ function BookingForm() {
   };
 
   const handleInputChange = (e) => {
+    if (isAdmin) return; // Prevent input changes for admins
+    
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -64,6 +128,14 @@ function BookingForm() {
   };
 
   const validateForm = () => {
+    if (isAdmin) {
+      setMessage({ 
+        type: 'error', 
+        text: 'Administrators cannot book appointments. Please use a customer account.' 
+      });
+      return false;
+    }
+    
     if (!formData.service) {
       setMessage({ type: 'error', text: 'Please select a service' });
       return false;
@@ -82,6 +154,14 @@ function BookingForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (isAdmin) {
+      setMessage({ 
+        type: 'error', 
+        text: 'Administrators cannot book appointments. Please use a customer account.' 
+      });
+      return;
+    }
+    
     if (!validateForm()) return;
 
     setLoading(true);
@@ -91,6 +171,17 @@ function BookingForm() {
       const token = localStorage.getItem('token');
       if (!token) {
         setMessage({ type: 'error', text: 'Please login to book an appointment' });
+        return;
+      }
+
+      // Check if user is admin (double check)
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user.role === 'admin') {
+        setMessage({ 
+          type: 'error', 
+          text: 'Administrators cannot book appointments. Please use a customer account.' 
+        });
+        setLoading(false);
         return;
       }
 
@@ -107,6 +198,8 @@ function BookingForm() {
         endTime: endTimeString,
         notes: formData.notes
       };
+
+      console.log('Submitting booking data:', bookingData); // Debug log
 
       const response = await axios.post('/api/bookings', bookingData, {
         headers: {
@@ -127,8 +220,10 @@ function BookingForm() {
         notes: ''
       });
       setAvailableSlots([]);
+      setHasDateFromCalendar(false);
 
     } catch (error) {
+      console.error('Booking error:', error); // Debug log
       if (error.response?.data?.message) {
         setMessage({ type: 'error', text: error.response.data.message });
       } else {
@@ -141,8 +236,47 @@ function BookingForm() {
 
   // Get today's date in YYYY-MM-DD format for min date
   const getTodayDate = () => {
-    return new Date().toISOString().split('T')[0];
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
+
+  // Get default date - either from calendar or tomorrow
+  const getDefaultDate = () => {
+    if (hasDateFromCalendar && formData.date) {
+      return formData.date;
+    }
+    // Return tomorrow's date
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const year = tomorrow.getFullYear();
+    const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+    const day = String(tomorrow.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  if (isAdmin) {
+    return (
+      <div className="booking-form-container">
+        <h2>Book Your Appointment</h2>
+        <div className="message error">
+          Administrators cannot book appointments. Please use a customer account.
+        </div>
+        <div className="admin-message">
+          <p>As an administrator, you can:</p>
+          <ul>
+            <li>Manage services in the Admin Dashboard</li>
+            <li>View and manage bookings</li>
+            <li>Generate reports</li>
+            <li>Manage users</li>
+          </ul>
+          <p>To book an appointment, please log in with a customer account.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="booking-form-container">
@@ -163,6 +297,7 @@ function BookingForm() {
             value={formData.service}
             onChange={handleInputChange}
             required
+            disabled={loading}
           >
             <option value="">Choose a service...</option>
             {services.map(service => (
@@ -179,11 +314,15 @@ function BookingForm() {
             type="date"
             id="date"
             name="date"
-            value={formData.date}
+            value={formData.date || getDefaultDate()}
             onChange={handleInputChange}
             min={getTodayDate()}
             required
+            disabled={loading}
           />
+          {hasDateFromCalendar && formData.date && (
+            <small className="date-hint">Selected from calendar: {formData.date}</small>
+          )}
         </div>
 
         <div className="form-group">
@@ -220,6 +359,7 @@ function BookingForm() {
             onChange={handleInputChange}
             placeholder="Any special requests or notes..."
             rows="3"
+            disabled={loading}
           />
         </div>
 
