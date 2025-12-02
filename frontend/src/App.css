@@ -252,3 +252,285 @@
     grid-template-columns: 1fr;
   }
 }
+/* ===== RESPONSIVE STYLES ===== */
+
+/* Mobile Styles (Default - Mobile First) */
+@media (max-width: 767px) {
+  /* Header Navigation */
+  .app-header .container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .app-header nav {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .app-header nav button {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .user-menu {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .welcome {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  /* Main Container */
+  .container {
+    padding: 1rem;
+  }
+
+  /* Home View */
+  .hero h2 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .feature-card {
+    padding: 1rem;
+  }
+
+  /* Forms */
+  .booking-form-container,
+  .auth-container,
+  .calendar-view,
+  .my-bookings,
+  .admin-dashboard {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .booking-form-container h2,
+  .auth-container h2 {
+    font-size: 1.5rem;
+  }
+
+  /* Tables */
+  table {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 0.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  /* Calendar */
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5px;
+  }
+
+  .calendar-day {
+    padding: 0.5rem;
+    min-height: 60px;
+  }
+
+  .day-number {
+    font-size: 0.8rem;
+  }
+
+  /* Service List */
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    padding: 1rem;
+  }
+
+  /* Booking Cards */
+  .booking-card {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .booking-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .booking-actions {
+    align-items: stretch;
+  }
+}
+
+/* Tablet Styles (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Header */
+  .app-header .container {
+    padding: 1rem 1.5rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .app-header nav {
+    gap: 0.75rem;
+  }
+
+  .app-header nav button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  /* Container */
+  .container {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+
+  /* Grid Systems */
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Forms */
+  .booking-form-container,
+  .auth-container {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  /* Calendar */
+  .calendar-day {
+    padding: 0.75rem;
+    min-height: 80px;
+  }
+
+  /* Tables */
+  table {
+    font-size: 0.9rem;
+  }
+
+  /* Admin Dashboard */
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-section {
+    grid-column: span 2;
+  }
+}
+
+/* Desktop Styles (1024px and up) */
+@media (min-width: 1024px) {
+  /* These are already in your main styles, ensure they're properly defined */
+  .container {
+    max-width: 1200px;
+    padding: 2rem;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Large Desktop Styles (1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Improve touch targets */
+  button, 
+  .booking-card,
+  .service-card,
+  .calendar-day {
+    cursor: default;
+  }
+
+  button:active,
+  .booking-card:active,
+  .service-card:active {
+    opacity: 0.8;
+  }
+
+  /* Remove hover effects on touch devices */
+  .service-card:hover,
+  .booking-card:hover,
+  .calendar-day:hover {
+    transform: none;
+  }
+
+  /* Increase tap targets */
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .app-header,
+  .app-footer,
+  button,
+  .booking-actions,
+  .action-buttons {
+    display: none !important;
+  }
+
+  .container {
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  .booking-card,
+  .service-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+}

@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminDashboard.css';
 import { adminAPI, serviceAPI, bookingAPI } from '../services/api';
+import { Bar, Pie, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement } from 'chart.js';
 
+// Register ChartJS components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement);
 
 function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -171,6 +175,90 @@ const handleDeleteService = async (serviceId) => {
             <div className="stat-card revenue">
               <h3>Revenue (7 days)</h3>
               <div className="stat-value">${stats.overview.revenue}</div>
+            </div>
+
+            {/* Add Charts Section HERE - after your existing stat cards */}
+            <div className="chart-section booking-chart">
+              <h3>Daily Bookings (Last 7 Days)</h3>
+              <div style={{ height: '300px' }}>
+                <Line 
+                  data={{
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                      label: 'Bookings',
+                      data: [12, 19, 8, 15, 12, 18, 10],
+                      borderColor: '#667eea',
+                      backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                      tension: 0.3
+                    }]
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="chart-section revenue-chart">
+              <h3>Revenue by Service</h3>
+              <div style={{ height: '300px' }}>
+                <Bar
+                  data={{
+                    labels: stats.popularServices.map(s => s.serviceName),
+                    datasets: [{
+                      label: 'Revenue ($)',
+                      data: stats.popularServices.map(s => s.bookingCount * (s.price || 0)),
+                      backgroundColor: [
+                        '#667eea', '#764ba2', '#28a745', '#ffc107', '#dc3545'
+                      ]
+                    }]
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          callback: function(value) {
+                            return '$' + value;
+                          }
+                        }
+                      }
+                    }
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="chart-section status-chart">
+              <h3>Booking Status Distribution</h3>
+              <div style={{ height: '300px' }}>
+                <Pie
+                  data={{
+                    labels: stats.bookingStatus.map(s => s._id),
+                    datasets: [{
+                      data: stats.bookingStatus.map(s => s.count),
+                      backgroundColor: [
+                        '#28a745', // confirmed - green
+                        '#dc3545', // cancelled - red
+                        '#17a2b8', // completed - teal
+                        '#ffc107'  // pending - yellow
+                      ]
+                    }]
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        position: 'bottom'
+                      }
+                    }
+                  }}
+                />
+              </div>
             </div>
 
             <div className="chart-section popular-services">

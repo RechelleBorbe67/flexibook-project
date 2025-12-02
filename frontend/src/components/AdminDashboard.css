@@ -95,6 +95,29 @@
 .today-bookings { border-left-color: #17a2b8; }
 .revenue { border-left-color: #dc3545; }
 
+/* Chart Styles */
+.booking-chart,
+.revenue-chart,
+.status-chart {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.chart-section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Responsive charts */
+@media (max-width: 768px) {
+  .chart-section {
+    height: 250px;
+  }
+}
+
 .chart-section {
   grid-column: span 2;
   background: white;

@@ -1,8 +1,10 @@
 const express = require('express');
 const Booking = require('../models/Booking');
 const Service = require('../models/Service');
+const User = require('../models/User'); // Add this import
 const auth = require('../middleware/auth');
 const router = express.Router();
+const { sendBookingConfirmation, sendBookingCancellation } = require('../utils/emailService');
 
 // @desc    Get available time slots for a service and date
 // @route   GET /api/bookings/available-slots
@@ -126,6 +128,15 @@ router.post('/', auth, async (req, res) => {
     await booking.populate('service');
     await booking.populate('customer', 'name email phone');
 
+    // Send booking confirmation email
+    try {
+      const user = await User.findById(req.userId);
+      await sendBookingConfirmation(booking, user, serviceExists);
+    } catch (emailError) {
+      console.error('Failed to send confirmation email:', emailError);
+      // Don't fail the booking if email fails
+    }
+
     res.status(201).json({
       success: true,
       message: 'Booking created successfully',
@@ -243,6 +254,16 @@ router.put('/:id/cancel', auth, async (req, res) => {
 
     booking.status = 'cancelled';
     await booking.save();
+
+    // Send booking cancellation email
+    try {
+      const user = await User.findById(req.userId);
+      const service = await Service.findById(booking.service);
+      await sendBookingCancellation(booking, user, service);
+    } catch (emailError) {
+      console.error('Failed to send cancellation email:', emailError);
+      // Don't fail the cancellation if email fails
+    }
 
     res.json({
       success: true,

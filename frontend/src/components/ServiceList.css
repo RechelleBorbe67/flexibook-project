@@ -1,107 +1,148 @@
-.service-list {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.service-list h2 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.service-card {
-  background: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  border-left: 4px solid #667eea;
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.service-card h3 {
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-size: 1.3rem;
-}
-
-.description {
-  color: #666;
-  margin-bottom: 1rem;
-  line-height: 1.5;
-}
-
-.service-details {
+/* Search and Filter Styles */
+.service-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.services-count {
+  color: #666;
+  font-size: 0.9rem;
+  background: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+.filter-controls {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.search-box {
+  grid-column: 1 / -1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 25px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  padding-left: 3rem;
+  background: #f8f9fa url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666" width="18px" height="18px"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>') no-repeat 1rem center;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: white;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
-.price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #27ae60;
+.filter-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
 }
 
-.duration, .category {
-  background: #f8f9fa;
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-size: 0.9rem;
+.filter-group select {
+  padding: 0.5rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 5px;
+  background: white;
+}
+
+.price-slider {
+  width: 100%;
+  height: 6px;
+  background: #e1e1e1;
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.price-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #667eea;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.price-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #667eea;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.price-range {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
   color: #666;
 }
 
-.book-btn {
-  width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.clear-filters {
+  background: #dc3545;
   color: white;
   border: none;
-  padding: 0.75rem;
+  padding: 0.5rem 1rem;
   border-radius: 5px;
-  font-size: 1rem;
   cursor: pointer;
+  font-size: 0.9rem;
   transition: background 0.3s;
+  align-self: end;
 }
 
-.book-btn:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+.clear-filters:hover {
+  background: #c82333;
 }
 
-.loading, .error {
+.no-results {
+  grid-column: 1 / -1;
   text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
+  padding: 3rem;
+  background: #f8f9fa;
+  border-radius: 10px;
 }
 
-.loading {
-  color: #667eea;
+.no-results h3 {
+  color: #666;
+  margin-bottom: 0.5rem;
 }
 
-.error {
-  color: #e74c3c;
+.no-results p {
+  color: #999;
 }
 
+/* Responsive filter controls */
 @media (max-width: 768px) {
-  .service-list {
-    padding: 1rem;
+  .filter-controls {
+    grid-template-columns: 1fr;
   }
   
-  .services-grid {
-    grid-template-columns: 1fr;
+  .service-list-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
   }
 }
