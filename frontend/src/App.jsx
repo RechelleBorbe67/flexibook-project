@@ -97,48 +97,92 @@ function App() {
       )}
 
       <header className="app-header">
-  <div className="container">
-    <div className="logo-container">
-      <div className="logo-box">
-        <span className="logo-text">FS</span>
-      </div>
-      <span className="logo-name">FlexiBook Salon</span>
-    </div>
-    <nav>
-            <button onClick={() => setCurrentView('home')}>Home</button>
+        <div className="container">
+          <div className="logo-container">
+            <div className="logo-box">
+              <span className="logo-text">FS</span>
+            </div>
+            <span className="logo-name">FlexiBook Salon</span>
+          </div>
+          
+          <nav className="main-nav">
+            <button 
+              className={currentView === 'home' ? 'active' : ''}
+              onClick={() => setCurrentView('home')}
+            >
+              Home
+            </button>
             
             {/* Show Services button only for non-admin users */}
             {user?.role !== 'admin' && (
-              <button onClick={() => setCurrentView('services')}>Services</button>
+              <button 
+                className={currentView === 'services' ? 'active' : ''}
+                onClick={() => setCurrentView('services')}
+              >
+                Services
+              </button>
             )}
             
             {/* Show Book Now button only for non-admin users */}
             {user?.role !== 'admin' && (
-              <button onClick={() => setCurrentView('booking')}>Book Now</button>
+              <button 
+                className={currentView === 'booking' ? 'active' : ''}
+                onClick={() => setCurrentView('booking')}
+              >
+                Book Now
+              </button>
             )}
             
             {/* Show Calendar button only for non-admin users */}
             {user?.role !== 'admin' && (
-              <button onClick={() => setCurrentView('calendar')}>Calendar</button>
+              <button 
+                className={currentView === 'calendar' ? 'active' : ''}
+                onClick={() => setCurrentView('calendar')}
+              >
+                Calendar
+              </button>
             )}
             
             {/* Show My Bookings button only for non-admin users */}
             {user?.role !== 'admin' && (
-              <button onClick={() => setCurrentView('bookings')}>My Bookings</button>
+              <button 
+                className={currentView === 'bookings' ? 'active' : ''}
+                onClick={() => setCurrentView('bookings')}
+              >
+                My Bookings
+              </button>
             )}
             
-            {user ? (
-              <div className="user-menu">
-                <span className="welcome">Welcome, {user.name}</span>
-                {user.role === 'admin' && (
-                  <button onClick={() => setCurrentView('admin')}>Admin</button>
-                )}
-                <button onClick={confirmLogout}>Logout</button>
-              </div>
-            ) : (
-              <button onClick={() => setCurrentView('login')}>Login</button>
+            {user?.role === 'admin' && (
+              <button 
+                className={currentView === 'admin' ? 'active' : ''}
+                onClick={() => setCurrentView('admin')}
+              >
+                Admin
+              </button>
             )}
           </nav>
+          
+          {user ? (
+            <div className="user-section">
+              <div className="user-info">
+                <span className="welcome">Welcome, {user.name}</span>
+              </div>
+              <button 
+                className="logout-btn"
+                onClick={confirmLogout}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button 
+              className={currentView === 'login' ? 'active login-btn' : 'login-btn'}
+              onClick={() => setCurrentView('login')}
+            >
+              Login
+            </button>
+          )}
         </div>
       </header>
 

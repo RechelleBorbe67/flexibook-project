@@ -709,3 +709,301 @@
   text-decoration: none;
   color: inherit;
 }
+
+/* Navigation Active State */
+.app-header nav button.active {
+  background-color: #7c3aed;
+  color: white;
+  font-weight: bold;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+.app-header nav button.active:hover {
+  background-color: #6d28d9;
+  transform: scale(1.05);
+}
+
+/* User menu welcome text */
+.user-menu .welcome {
+  color: #1f2937;  /* Dark gray */
+  font-weight: 500;
+  margin-right: 15px;
+}
+
+/* Make the navbar buttons more distinct */
+.app-header nav button {
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 4px;
+}
+
+.app-header nav button:not(.active):hover {
+  background-color: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+/* Add an indicator line under active button */
+.app-header nav button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Logo styling */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-box {
+  width: 40px;
+  height: 40px;
+  background-color: #7c3aed;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo-name {
+  font-weight: 600;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+/* Header layout */
+.app-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.app-header nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Header layout */
+.app-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+/* Logo styling */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logo-box {
+  width: 40px;
+  height: 40px;
+  background-color: #7c3aed;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo-name {
+  font-weight: 600;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+/* Main navigation (centered) */
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+  margin: 0 20px;
+}
+.main-nav button {
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1; /* Light border from guide */
+  background-color: #f8fafc; /* Very light blue-gray from guide */
+  cursor: pointer;
+  font-size: 16px;
+  color: #1e293b; /* Very dark blue from guide */
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+}
+
+.main-nav button:hover {
+  background-color: #f1f5f9; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); 
+}
+
+.main-nav button.active {
+  color: white;
+  background-color: #7c3aed;
+  border-color: #5b21b6;
+  font-weight: bold;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+.main-nav button.active:hover {
+  background-color: #6d28d9;
+  transform: scale(1.05);
+}
+
+.main-nav button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* User section (right side) */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.welcome {
+  color: #4c1d95;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+/* Logout button */
+.logout-btn {
+  background-color: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn:hover {
+  background-color: #111827;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Login button (when not logged in) */
+.login-btn {
+  background-color: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.login-btn:hover {
+  background-color: #6d28d9;
+  transform: translateY(-1px);
+}
+
+.login-btn.active {
+  background-color: #5b21b6;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .app-header .container {
+    flex-wrap: wrap;
+  }
+  
+  .main-nav {
+    order: 3;
+    width: 100%;
+    margin-top: 16px;
+    justify-content: center;
+  }
+  
+  .logo-container {
+    order: 1;
+  }
+  
+  .user-section, .login-btn {
+    order: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .main-nav button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .user-section {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  
+  .welcome {
+    font-size: 12px;
+  }
+  
+  .logout-btn {
+    padding: 6px 16px;
+    font-size: 12px;
+  }
+}

@@ -5,59 +5,155 @@ import { bookingAPI } from '../services/api';
 
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [filter, setFilter] = useState('all'); // all, confirmed, cancelled, completed
 
   useEffect(() => {
     fetchBookings();
-  }, [filter]);
+  }, []);
+
+  useEffect(() => {
+    applyFilter();
+  }, [bookings, filter]);
 
   const fetchBookings = async () => {
-  try {
-    setLoading(true);
-    const params = filter !== 'all' ? { status: filter } : {};
-    const response = await bookingAPI.getMyBookings(params);
-    setBookings(response.data.data.bookings);
-    setLoading(false);
-  } catch (error) {
-    setMessage({ type: 'error', text: 'Failed to load bookings' });
-    setLoading(false);
-  }
-};
-  const handleCancelBooking = async (bookingId) => {
-  if (!window.confirm('Are you sure you want to cancel this booking?')) {
-    return;
-  }
+    try {
+      setLoading(true);
+      const response = await bookingAPI.getMyBookings();
+      setBookings(response.data.data.bookings || []);
+      setLoading(false);
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to load bookings' });
+      setLoading(false);
+    }
+  };
 
-  try {
-    await bookingAPI.cancel(bookingId);
-    setMessage({ type: 'success', text: 'Booking cancelled successfully' });
-    fetchBookings(); // Refresh the list
-  } catch (error) {
-    setMessage({ type: 'error', text: 'Failed to cancel booking' });
-  }
-};
+  // Helper function to parse date correctly
+  const parseBookingDateTime = (booking) => {
+    try {
+      // Parse the date from your booking object
+      // Assuming booking.date is in format "YYYY-MM-DD"
+      // and booking.startTime is in format "HH:MM"
+      const dateParts = booking.date.split('-');
+      const timeParts = booking.startTime.split(':');
+      
+      // Create date object in local timezone
+      const bookingDateTime = new Date(
+        parseInt(dateParts[0]), // year
+        parseInt(dateParts[1]) - 1, // month (0-indexed)
+        parseInt(dateParts[2]), // day
+        parseInt(timeParts[0]), // hours
+        parseInt(timeParts[1]) || 0 // minutes
+      );
+      
+      return bookingDateTime;
+    } catch (error) {
+      console.error('Error parsing date:', error);
+      // Return a future date as fallback
+      return new Date('2099-12-31');
+    }
+  };
+
+  const applyFilter = () => {
+    if (!bookings || bookings.length === 0) {
+      setFilteredBookings([]);
+      return;
+    }
+
+    const now = new Date();
+    console.log('Current date/time:', now.toISOString()); // For debugging
+
+    const filtered = bookings.filter(booking => {
+      const bookingDateTime = parseBookingDateTime(booking);
+      console.log('Booking date/time:', bookingDateTime.toISOString(), 'for booking:', booking.service?.name); // For debugging
+      
+      // Check if booking should be marked as completed (past date)
+      const isPastAppointment = bookingDateTime < now;
+      console.log('Is past appointment?', isPastAppointment); // For debugging
+      
+      const effectiveStatus = (isPastAppointment && 
+                              booking.status !== 'cancelled' && 
+                              booking.status !== 'completed') 
+                            ? 'completed' 
+                            : booking.status;
+
+      console.log('Effective status:', effectiveStatus); // For debugging
+
+      switch (filter) {
+        case 'all':
+          return true;
+        case 'confirmed':
+          return effectiveStatus === 'confirmed';
+        case 'cancelled':
+          return effectiveStatus === 'cancelled';
+        case 'completed':
+          return effectiveStatus === 'completed' || 
+                 (isPastAppointment && booking.status !== 'cancelled');
+        default:
+          return true;
+      }
+    });
+
+    console.log('Filtered bookings count:', filtered.length); // For debugging
+    setFilteredBookings(filtered);
+  };
+
+  const handleCancelBooking = async (bookingId) => {
+    if (!window.confirm('Are you sure you want to cancel this booking?')) {
+      return;
+    }
+
+    try {
+      await bookingAPI.cancel(bookingId);
+      setMessage({ type: 'success', text: 'Booking cancelled successfully' });
+      fetchBookings();
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to cancel booking' });
+    }
+  };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (error) {
+      return dateString;
+    }
   };
 
   const formatTime = (timeString) => {
-    const [hours, minutes] = timeString.split(':');
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const formattedHour = hour % 12 || 12;
-    return `${formattedHour}:${minutes} ${ampm}`;
+    if (!timeString) return 'N/A';
+    try {
+      const [hours, minutes] = timeString.split(':');
+      const hour = parseInt(hours);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const formattedHour = hour % 12 || 12;
+      return `${formattedHour}:${minutes} ${ampm}`;
+    } catch (error) {
+      return timeString;
+    }
   };
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (booking) => {
+    const now = new Date();
+    const bookingDateTime = parseBookingDateTime(booking);
+    const isPastAppointment = bookingDateTime < now;
+    
+    // Determine the effective status
+    let effectiveStatus = booking.status;
+    if (isPastAppointment && 
+        booking.status !== 'cancelled' && 
+        booking.status !== 'completed') {
+      effectiveStatus = 'completed';
+    }
+
     const statusConfig = {
       confirmed: { class: 'status-confirmed', text: 'Confirmed' },
       cancelled: { class: 'status-cancelled', text: 'Cancelled' },
@@ -65,15 +161,22 @@ function MyBookings() {
       pending: { class: 'status-pending', text: 'Pending' }
     };
 
-    const config = statusConfig[status] || { class: 'status-pending', text: status };
+    const config = statusConfig[effectiveStatus] || { class: 'status-pending', text: effectiveStatus };
     return <span className={`status-badge ${config.class}`}>{config.text}</span>;
   };
 
   const canCancelBooking = (booking) => {
-    // Can only cancel confirmed or pending bookings that are in the future
-    const bookingDateTime = new Date(`${booking.date}T${booking.startTime}`);
+    const bookingDateTime = parseBookingDateTime(booking);
     const now = new Date();
-    return (booking.status === 'confirmed' || booking.status === 'pending') && bookingDateTime > now;
+    
+    const isPastAppointment = bookingDateTime < now;
+    const effectiveStatus = (isPastAppointment && 
+                            booking.status !== 'cancelled' && 
+                            booking.status !== 'completed') 
+                          ? 'completed' 
+                          : booking.status;
+    
+    return (effectiveStatus === 'confirmed' || effectiveStatus === 'pending') && bookingDateTime > now;
   };
 
   if (loading) {
@@ -125,14 +228,23 @@ function MyBookings() {
         </div>
       )}
 
-      {bookings.length === 0 ? (
+      {filteredBookings.length === 0 ? (
         <div className="no-bookings">
           <h3>No bookings found</h3>
-          <p>You haven't made any bookings yet, or no bookings match your filter.</p>
+          <p>
+            {filter === 'all' 
+              ? "You haven't made any bookings yet." 
+              : `No ${filter} bookings found.`}
+          </p>
+          <div className="debug-info">
+            <p><strong>Current date:</strong> {new Date().toLocaleDateString()}</p>
+            <p><strong>Total bookings:</strong> {bookings.length}</p>
+            <p><strong>Filter:</strong> {filter}</p>
+          </div>
         </div>
       ) : (
         <div className="bookings-list">
-          {bookings.map(booking => (
+          {filteredBookings.map(booking => (
             <div key={booking._id} className="booking-card">
               <div className="booking-info">
                 <div className="service-details">
@@ -149,7 +261,9 @@ function MyBookings() {
                   </div>
                   <div className="detail-item">
                     <span className="label">Time:</span>
-                    <span className="value">{formatTime(booking.startTime)} - {formatTime(booking.endTime)}</span>
+                    <span className="value">
+                      {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
+                    </span>
                   </div>
                   <div className="detail-item">
                     <span className="label">Duration:</span>
@@ -170,7 +284,7 @@ function MyBookings() {
 
               <div className="booking-actions">
                 <div className="booking-status">
-                  {getStatusBadge(booking.status)}
+                  {getStatusBadge(booking)}
                   <span className="booking-id">#{booking._id.slice(-6)}</span>
                 </div>
                 
@@ -187,7 +301,7 @@ function MyBookings() {
                   <span className="cancelled-note">This booking has been cancelled</span>
                 )}
                 
-                {booking.status === 'completed' && (
+                {getStatusBadge(booking).props.children === 'Completed' && (
                   <span className="completed-note">Service completed</span>
                 )}
               </div>
